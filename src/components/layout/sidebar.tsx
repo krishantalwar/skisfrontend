@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 
 const navItems = [
   { name: "Dashboard", icon: Home, href: "/" },
-  { name: "Profile", icon: User, href: "/profile" },
+  { name: "Motor", icon: User, href: "/MotorForm" },
 ]
 
 export function Sidebar({ isOpen }: { isOpen: boolean }) {
