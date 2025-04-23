@@ -35,7 +35,7 @@ export default function NavLayout() {
 
   // Function to check if the current location matches the path
   const isActive = (path: string) => location.pathname===path
-  console.log(location.pathname);
+  // console.log(location.pathname);
   // console.log(isActive);
   const hasActiveChild = (item: any) =>
     item.Children?.some((child: any) => location.pathname === child.href);
@@ -60,7 +60,7 @@ export default function NavLayout() {
                   className={`text-base font-medium px-4 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
                     ${
                       hasActiveChild(item)
-                        ? "bg-primary text-primary-foreground"
+                        ? "bg-accent text-accent-foreground font-semibold"
                         :""
                     }`}
                 >

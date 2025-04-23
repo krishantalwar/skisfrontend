@@ -10,6 +10,7 @@ import MotorForm from "@/pages/covernote/MotorForm"
 import NonMotorForm from "@/pages/covernote/NonMotorForm"
 import HealthForm from "@/pages/covernote/HelathForm"
 import LicForm from "@/pages/covernote/LicForm"
+import UserTable from "@/pages/covernote/Covernote"
 // import MotorFormWrapper from "@/pages/covernote/MotorFormWrapper"
 // import Lic from "@/pages/covernote/LicForm"
 
@@ -27,7 +28,8 @@ function App() {
           <Route path="MotorForm"  element={<MotorForm />} />
           <Route path="NonMotorForm"  element={<NonMotorForm />} />
           <Route path="HealthForm"  element={<HealthForm />} />
-          <Route path="LicForm"  element={<LicForm />} />
+          <Route path="LicForm"  element={<LicForm />} /> 
+          <Route path="Covernote"  element={<UserTable />} />
         </Route>
       </Route>
       <Route element={<OldMaster />}>

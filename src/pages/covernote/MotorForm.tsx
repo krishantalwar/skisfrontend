@@ -24,7 +24,8 @@ import {
 
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { showMessage } from "../../features/ui/globalMessageSlice"
+import { showMessage } from "@/features/ui/globalMessageSlice"
+import { showLoader ,hideLoader} from "@/features/ui/LoaderOverlaySlice"
 import { useAppDispatch } from "@/hooks/hooks";
 
 
@@ -344,11 +345,14 @@ const LicForm = () => {
         description: "Covernote Insert Sucessfully",
         show: true,
       }))
+      dispatch(showLoader({
+        isLoading:true
+      }))
     } catch (error) {
       setApiFieldErrors(error, setError) // ✅ reusable error handler
+      dispatch(hideLoader())
     }
   };
-
 
 
   return (

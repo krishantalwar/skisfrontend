@@ -2,6 +2,8 @@ import { ThemeToggle } from "@/components/navbar/theme-toggle"
 import { ResponsiveSidebar } from "./ResponsiveSidebar"
 import { Navbar } from "@/components/navbar/Navbar"
 import { GlobalMessageModal } from "@/components/GlobalMessageModal"
+import LoaderOverlay from "@/components/LoaderOverlay"
+
 
 import { Outlet,useLocation  } from "react-router-dom";
 
@@ -18,6 +20,7 @@ export function Layout() {
             {/* <ThemeToggle /> */}
         
           </div>
+          <LoaderOverlay />
           <GlobalMessageModal/>
 
           <Outlet/>
