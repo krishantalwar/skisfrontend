@@ -28,7 +28,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
         logout: builder.mutation({
             query: (body) => ({
-                url: `auth/login`,
+                url: `auth/logout`,
                 method: 'post',
                 body: body,
             }),
@@ -43,7 +43,11 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     console.log(data);
                     // cookie('ssstoken', "sss", { httpOnly: true, secure: true, path: "/" });
                     // document.cookie = 'authToken=asssadas; path=/; secure; HttpOnly';
-                    dispatch(logouts(data));
+                    // dispatch(logouts(data));
+                    // dispatch(apiSlice.util.resetApiState());
+
+                    dispatch(logouts());
+                    dispatch(apiSlice.util.resetApiState());
                 } catch (error) {
                     console.log("error", error)
                 }

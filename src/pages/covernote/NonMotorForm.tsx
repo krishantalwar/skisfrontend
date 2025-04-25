@@ -17,11 +17,13 @@ import { useProductQuery } from '@/features/gloabelService';
 import { useAppDispatch } from '@/hooks/hooks';
 import {
     useCovernoteExitsQuery,
-    useMotorInsertMutation
+    // useMotorInsertMutation,
+    useNonMotorInsertMutation
   } from "@/features/covernote/service";
   
 import { setApiFieldErrors } from '@/lib/setApiFieldErrors'
 
+import { showLoader ,hideLoader} from "@/features/ui/LoaderOverlaySlice"
 import { showMessage } from "../../features/ui/globalMessageSlice"
 // --- Types ---
 interface FormData {
@@ -237,7 +239,7 @@ const MotorForm = () => {
     mode: 'onChange',
   });
 
-  const { control, handleSubmit, getValues, setValue } = methods;
+  const { control, handleSubmit, getValues, setValue,setError,reset } = methods;
   const basic = useWatch({ control, name: 'basic' });
   const gst = useWatch({ control, name: 'gst' });
 
@@ -262,30 +264,35 @@ const MotorForm = () => {
 
 
 const [
-    MotorInsert,
+    NonMotorInsert,
     {
       // currentData,
-      isFetching,
+      
       isLoading,
       isSuccess,
       isError,
       error,
       status,
     },
-  ] = useMotorInsertMutation();
+  ] = useNonMotorInsertMutation();
 
 
     const onSubmit = async (data: any) => {
-      console.log("Submitting:", data);
+      // console.log("Submitting:", data);
       // Handle the submission logic (like calling API, etc.)
+            dispatch(showLoader({
+                          isLoading:true
+                        }));
       try {
-        await MotorInsert(data).unwrap()
+        await NonMotorInsert(data).unwrap()
+            dispatch(hideLoader())
         dispatch(showMessage({
           type: "success",
           title: "Insert",
           description: "Covernote Insert Sucessfully",
           show: true,
         }))
+        reset(DEFAULT_VALUES)
       } catch (error) {
         setApiFieldErrors(error, setError) // ✅ reusable error handler
       }

@@ -6,7 +6,17 @@ import { showMessage } from "../features/ui/globalMessageSlice"
 export const baseQuery = fetchBaseQuery({
   baseUrl: "http://127.0.0.1:8000/api/",
   // credentials: "include",
-  prepareHeaders: (headers) => {
+  // prepareHeaders: (headers) => {
+  //   headers.set("Accept", "application/json")
+  //   return headers
+  // },
+
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState)?.auth?.token // or localStorage.getItem("token")
+    console.log("auth",token)
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`)
+    }
     headers.set("Accept", "application/json")
     return headers
   },
@@ -31,7 +41,7 @@ export const customBaseQuery: BaseQueryFn<any, unknown, FetchBaseQueryError> = a
       dispatch(
         showMessage({
           type: "error",
-          title: "API Error",
+          title: "Error",
           description: message,
           show: true,
         })
@@ -42,7 +52,7 @@ export const customBaseQuery: BaseQueryFn<any, unknown, FetchBaseQueryError> = a
     dispatch(
       showMessage({
         type: "error",
-        title: "API Error",
+        title: "Error",
         description: message,
         show: true,
       })

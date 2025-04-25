@@ -14,11 +14,21 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
           covernote: builder.query({
             query: ({ page, perPage }) => `/covernotes?page=${page}&per_page=${perPage}`,
+            
             // transformResponse: (response) => ({
             //   data: response.data,
             //   total: response.meta.total,
             // }),
           }),
+
+              // ✅ New endpoint: get all users without pagination
+              covernoteAll: builder.query({
+        query: () => ({
+          url: "/covernotes/all",
+          method: "GET",
+        //   params: { all: true },
+        }),
+      }),
         covernoteExits: builder.query({
             query: (id) => '/covernotes/exist/' + id, // GET endpoint
             // refetchOnReconnect: true,  // refetch if the connection is restored
@@ -37,6 +47,37 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 return responseData;
             },
         }),
+        nonMotorInsert: builder.mutation({
+            query: (body) => ({
+                url: `covernotes/non-motor`,
+                method: 'post',
+                body: body,
+            }),
+            transformResponse: responseData => {
+                return responseData;
+            },
+        }),
+
+        healthInsert: builder.mutation({
+            query: (body) => ({
+                url: `covernotes/health`,
+                method: 'post',
+                body: body,
+            }),
+            transformResponse: responseData => {
+                return responseData;
+            },
+        }),
+        licInsert: builder.mutation({
+            query: (body) => ({
+                url: `covernotes/lic`,
+                method: 'post',
+                body: body,
+            }),
+            transformResponse: responseData => {
+                return responseData;
+            },
+        }),
     }),
     overrideExisting: false,
 });
@@ -46,6 +87,13 @@ export const {
     useCovernoteExitsQuery,
     useMotorInsertMutation,
     useCovernoteQuery,
+
+    useNonMotorInsertMutation,
+    useHealthInsertMutation,
+    useLicInsertMutation,
+    
+    useLazyCovernoteAllQuery
+   
 } = extendedApiSlice;
 
 export default extendedApiSlice;

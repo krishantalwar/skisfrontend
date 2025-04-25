@@ -3,8 +3,10 @@ import { useLogoutMutation } from "@/features/auth/service"
 import { showLoader ,hideLoader} from "@/features/ui/LoaderOverlaySlice"
 import { logout} from "@/features/auth/authSlice"
 import { useAppDispatch } from "@/hooks/hooks";
+import { useNavigate } from "react-router-dom";
 
 export function ProfileDropdown() {
+  const navigate=useNavigate();
  const dispatch= useAppDispatch()
   const [
     logoutapi,
@@ -24,11 +26,13 @@ export function ProfileDropdown() {
       console.log("Submitting:");
       // Handle the submission logic (like calling API, etc.)
       try {
-        await logoutapi().unwrap()
-        dispatch(logout({}))
         dispatch(showLoader({
           isLoading:true
         }))
+        await logoutapi().unwrap()
+        dispatch(logout({}))
+        dispatch(hideLoader())
+        navigate('/')
       } catch (error) {
         dispatch(hideLoader())
       }

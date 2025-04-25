@@ -18,12 +18,13 @@ import { useProductQuery } from '@/features/gloabelService';
 import { useAppDispatch } from '@/hooks/hooks';
 import {
     useCovernoteExitsQuery,
-    useMotorInsertMutation
+    useLicInsertMutation
   } from "@/features/covernote/service";
   
 import { setApiFieldErrors } from '@/lib/setApiFieldErrors'
 
 import { showMessage } from "../../features/ui/globalMessageSlice"
+import { showLoader,hideLoader } from "../../features/ui/LoaderOverlaySlice"
 import * as yup from 'yup';
 import { FormTextArea } from '@formFields/FormTextArea';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -31,7 +32,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 const DEFAULT_VALUES = {
     covernote: undefined,
-    covernote_type: 1,
+    covernote_type: 4,
     start_date: undefined,
     end_date: undefined,
     issue_date: undefined,
@@ -42,12 +43,12 @@ const DEFAULT_VALUES = {
     company_id: undefined,
     agent_id: undefined,
     product_type: undefined,
-    policy_type: 2,
+    policy_type: 4,
     remark: undefined,
     si: undefined,
     net_premium: undefined,
     gst: undefined,
-    gst_amount: undefined,
+    // gst_amount: undefined,
     total: undefined,
     final_amt: undefined,
     policy_info: undefined,
@@ -56,23 +57,30 @@ const DEFAULT_VALUES = {
     paymentmode: undefined,
     file: undefined,
     recivedpayment: undefined,
-    premium_payment_mode:undefined,
-    premium_expiry_date:undefined
+    pre_payment_mode:undefined,
+    pre_exp_date:undefined,
 
-  
+    dob:undefined
   };
   
 
-const paymentModes = [
-  { label: 'Customer Cheque / Cash', value: 1 },
-  { label: 'Customer Online Payment', value: 2 },
-  { label: 'SKIS Check', value: 3 },
-  { label: 'SKIS Cash', value: 4 },
-  { label: 'SKIS Online', value: 5 },
-  { label: 'SKIS Cc', value: 6 },
+  const paymentModes = [
+    { label: 'Customer Cash', value: 1 },
+    { label: 'Customer Online Payment', value: 2 },
+    { label: 'SKIS Check', value: 3 },
+    { label: 'SKIS Cash', value: 4 },
+    { label: 'SKIS Online', value: 5 },
+    { label: 'SKIS Cc', value: 6 }
+  ];
+
+
+
+const PremiumPaymentMode = [
+  { label: 'Year', value: 12 },
+  { label: 'Half-Yearly', value: 6 },
+  { label: 'Quarterly', value: 3 },
+  { label: 'Monthly', value: 1 },
 ];
-
-
 const validationSchema = yup.object({
   covernote: yup.string()
     .required('Covernote is required')
@@ -90,6 +98,7 @@ const validationSchema = yup.object({
     .min(yup.ref('start_date'), 'End date must be after or equal to start date'),
 
   issue_date: yup.date().required('Issue date is required'),
+  dob: yup.date().required('DOB date is required'),
 
   // create_date: yup.date().required('Create date is required'),
 
@@ -131,14 +140,14 @@ const validationSchema = yup.object({
     .integer('Policy type must be an integer')
     .positive('Policy type must be a positive number'),
 
-    premium_payment_mode: yup.number()
+    pre_payment_mode: yup.number()
     .required('Policy type is required')
     .integer('Policy type must be an integer')
     .positive('Policy type must be a positive number'),
     
-    premium_expiry_date:yup.date()
-    .required('premium_expiry_date date is required')
-    .min(yup.ref('start_date'), 'End date must be after or equal to start date'),
+    pre_exp_date:yup.date()
+    .required('pre_exp_date date is required')
+    .min(yup.ref('start_date'), 'Pre Exp date must be after or equal to start date'),
 
 
 
@@ -173,23 +182,55 @@ const validationSchema = yup.object({
 });
 
 const LicForm = () => {
+    const dispatch = useAppDispatch();
     const methods = useForm({
         defaultValues: DEFAULT_VALUES,
             resolver: yupResolver(validationSchema),
             mode: 'onChange',     
     })
-    const { data: Product = [] } = useProductQuery(2);
+    const { data: Product = [] } = useProductQuery(4);
 
 
-    const { control, handleSubmit , getValues,setValue} = methods
+    const { control, handleSubmit , getValues,setValue,setError,reset} = methods
     const net_premium = useWatch({ control, name: "net_premium" })
     const gst = useWatch({ control, name: "gst" })
     const start_date = useWatch({ control, name: "start_date" })
-    const premium_payment_mode = useWatch({ control, name: "premium_payment_mode" })
+    const premium_payment_mode = useWatch({ control, name: "pre_payment_mode" })
 
-    const onSubmit = (data: any) => {
+    const [
+        LicInsert,
+        {
+          // currentData,
+          isFetching,
+          isLoading,
+          isSuccess,
+          isError,
+          error,
+          status,
+        },
+      ] = useLicInsertMutation();
+    
+    const onSubmit = async (data: any) => {
         console.log(data)
         // Call API here
+        dispatch(showLoader({
+          isLoading:true
+        }));
+        try {
+            await LicInsert(data).unwrap()
+            dispatch(hideLoader());
+            dispatch(showMessage({
+              type: "success",
+              title: "Insert",
+              description: "Covernote Insert Sucessfully",
+              show: true,
+            }))
+            reset(DEFAULT_VALUES)
+        } catch (error) {
+          dispatch(hideLoader());
+          setApiFieldErrors(error, setError) // ✅ reusable error handler
+        
+        }
     }
 
     
@@ -208,16 +249,24 @@ const LicForm = () => {
 
     const premium_expiry_date = useMemo(() => {
         if (!start_date || !premium_payment_mode) return;
+      console.log(start_date)
 
         const newDate = new Date(start_date)
-        return newDate.setMonth(newDate.getMonth() + premium_payment_mode) // hardcoded for now
+         newDate.setMonth(newDate.getMonth() + premium_payment_mode) // hardcoded for now
          
+        // const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        const formattedDate =  newDate.toLocaleDateString('en-US', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric'
+        });
+      return formattedDate
     }, [start_date,premium_payment_mode ]);
     
     useEffect(() => {
 
-        if (premium_expiry_date !== getValues('premium_expiry_date')) {
-            setValue("premium_expiry_date",premium_expiry_date) // e.g., 2024-05-01
+        if (premium_expiry_date !== getValues('pre_exp_date')) {
+            setValue("pre_exp_date",premium_expiry_date) // e.g., 2024-05-01
         }
         
       }, [premium_expiry_date])
@@ -233,14 +282,14 @@ const LicForm = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <DatePickerField name="dob" label="Date of Birth" control={control} />
 
-                    <FormSelect name="premium_payment_mode" label="Premium Payment Mode" control={control} options={paymentModes} />
+                    <FormSelect name="pre_payment_mode" label="Premium Payment Mode" control={control} options={PremiumPaymentMode} />
                 
-                    <FormInput name="premium_expiry_date" label="Premium Expiry Date" control={control} placeholder="Premium Expiry Date"  />
+                    <FormInput name="pre_exp_date" label="Premium Expiry Date" control={control} placeholder="Premium Expiry Date"  />
                   
 
                     <FormInput name="si" label="SI" control={control} placeholder="SI" type="number" />
                     <FormInput name="net_premium" label="Net Premium" control={control} placeholder="Net Premium" type="number" />   
-                    <FormInput name="gst" label="GST" control={control} placeholder="Model"   type="number"/>
+                    <FormInput name="gst" label="GST" control={control} placeholder="GST"   type="number"/>
                 
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

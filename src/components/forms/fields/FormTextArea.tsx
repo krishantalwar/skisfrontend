@@ -78,6 +78,7 @@ export  function FormTextArea<T extends FieldValues>({
           <Label>{label}</Label>
           <FormControl>
             <Textarea  {...field} placeholder={placeholder} 
+             value={field.value ?? ''} // ✅ Add fallback
                 disabled={disabled}
              onChange={(e) => {
               let  value = e.target.value

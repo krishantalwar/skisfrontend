@@ -12,8 +12,8 @@ const authSlice = createSlice({
       // state.isAuthenticated = action.payload.isAuthenticated;
       // state.user = action.payload.user;
       state.isAuthenticated = true;
-      // state.data = action.payload;
-      state.token = action.payload.data?.access_token;
+      state.user = action.payload;
+      state.token = action.payload?.access_token;
       // state.refresh_token = action.payload.data?.refresh_token;
       // state.userName = action.payload.data?.user?.name;
       // state.financial_year = action.payload.data?.financial_year;
@@ -25,10 +25,10 @@ const authSlice = createSlice({
       console.log(action)
       return state;
     },
-    logout: (state, action) => {
+    logout: (state) => {
       state.isAuthenticated = false;
       state.token = null;
-      // state.user = "";
+      state.user = null;
       // state = undefined
 
       return state;

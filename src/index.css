@@ -66,3 +66,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* global.css or Tailwind plugin */
+.scroll-shadow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 20px;
+  background: linear-gradient(to right, transparent, rgba(0,0,0,0.05));
+  pointer-events: none;
+}

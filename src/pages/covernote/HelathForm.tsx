@@ -17,12 +17,14 @@ import { useProductQuery } from '@/features/gloabelService';
 import { useAppDispatch } from '@/hooks/hooks';
 import {
     useCovernoteExitsQuery,
-    useMotorInsertMutation
+    // useMotorInsertMutation,
+    useHealthInsertMutation
   } from "@/features/covernote/service";
   
 import { setApiFieldErrors } from '@/lib/setApiFieldErrors'
 
 import { showMessage } from "../../features/ui/globalMessageSlice"
+import { showLoader,hideLoader } from "../../features/ui/LoaderOverlaySlice"
 // --- Types ---
 interface FormData {
   covernote: string;
@@ -237,11 +239,11 @@ const MotorForm = () => {
     mode: 'onChange',
   });
 
-  const { control, handleSubmit, getValues, setValue } = methods;
+  const { control, handleSubmit, getValues, setValue,setError,reset } = methods;
   const basic = useWatch({ control, name: 'basic' });
   const gst = useWatch({ control, name: 'gst' });
 
-  const { data: Product = [] } = useProductQuery(2);
+  const { data: Product = [] } = useProductQuery(3);
 
   useEffect(() => {
     const parsedBasic = parseFloat(basic || '0');
@@ -262,7 +264,7 @@ const MotorForm = () => {
 
 
 const [
-    MotorInsert,
+    HealthInsert,
     {
       // currentData,
       isFetching,
@@ -272,21 +274,27 @@ const [
       error,
       status,
     },
-  ] = useMotorInsertMutation();
+  ] = useHealthInsertMutation();
 
 
     const onSubmit = async (data: any) => {
-      console.log("Submitting:", data);
+      // console.log("Submitting:", data);
       // Handle the submission logic (like calling API, etc.)
+          dispatch(showLoader({
+                isLoading:true
+              }));
       try {
-        await MotorInsert(data).unwrap()
+        await HealthInsert(data).unwrap()
+                dispatch(hideLoader());
         dispatch(showMessage({
           type: "success",
           title: "Insert",
           description: "Covernote Insert Sucessfully",
           show: true,
         }))
+        reset(DEFAULT_VALUES)
       } catch (error) {
+              dispatch(hideLoader());
         setApiFieldErrors(error, setError) // ✅ reusable error handler
       }
     };

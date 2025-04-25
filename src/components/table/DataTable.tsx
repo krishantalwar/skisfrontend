@@ -86,12 +86,15 @@ export function DataTable<TData, TValue>({
         <DataTableToolbar table={table} onSearch={onSearch} />
         <DataTableColumnToggle table={table} />
       </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+      {/* <div className="rounded-md border"> */}
+          <div className="relative w-full overflow-x-auto rounded-md border scroll-shadow">
+
+      {/* <div className="w-full overflow-x-auto rounded-md border"> */}
+        <Table className="w-full ">
+          <TableHeader className="sticky top-0 z-10 bg-background">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                <TableHead>
+              <TableRow key={headerGroup.id} className="align-top">
+                <TableHead className="w-10">
                   {/* <Checkbox
                     checked={table.getIsAllPageRowsSelected()}
                     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
@@ -99,7 +102,11 @@ export function DataTable<TData, TValue>({
                   /> */}
                 </TableHead>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id}
+                  // className="whitespace-nowrap px-2 py-3 text-left align-top" // prevent wrapping in headers
+                  className={`whitespace-nowrap px-2 py-3 text-left align-top ${header.column.columnDef.meta?.className ?? ''}`}
+    
+                  >
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
@@ -109,13 +116,13 @@ export function DataTable<TData, TValue>({
           <TableBody>
           {loading ? (
             <TableRow>
-              <TableCell colSpan={columns.length}>Loading...</TableCell>
+              <TableCell colSpan={columns.length+1}>Loading...</TableCell>
             </TableRow>
           ) : table.getRowModel().rows.length ? (
           
           table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>
+              <TableRow key={row.id} className="align-top">
+                <TableCell className="w-10 align-top">
                   <Checkbox
                     checked={row.getIsSelected()}
                     onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -123,20 +130,26 @@ export function DataTable<TData, TValue>({
                   />
                 </TableCell>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id}
+                  // className="whitespace-nowrap px-2 py-3 text-left align-top" // prevent wrapping by default
+          
+                  className={`whitespace-nowrap px-2 py-3 text-left align-top ${cell.column.columnDef.meta?.className ?? ''}`}
+       
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
             )))    : (
               <TableRow>
-                <TableCell colSpan={columns.length}>No results.</TableCell>
+                <TableCell colSpan={columns.length+1}>No results.</TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
       <DataTablePagination table={table} total={total} page={page} onPageChange={onPageChange} />
+    {/* </div> */}
     </div>
   )
 }

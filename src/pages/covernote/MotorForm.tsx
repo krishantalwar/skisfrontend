@@ -294,7 +294,7 @@ const LicForm = () => {
 
 
 
-  const { control, handleSubmit, getValues, setValue,formState: { errors },setError } = methods;
+  const { control, handleSubmit, getValues, setValue,setError,reset } = methods;
   // Calculate total based on net premium and GST
   const basic = useWatch({ control, name: 'basic' });
   const pa = useWatch({ control, name: 'pa' });
@@ -337,20 +337,24 @@ const LicForm = () => {
   const onSubmit = async (data: any) => {
     console.log("Submitting:", data);
     // Handle the submission logic (like calling API, etc.)
+         dispatch(showLoader({
+                    isLoading:true
+                  }));
     try {
       await MotorInsert(data).unwrap()
+      dispatch(hideLoader())
       dispatch(showMessage({
         type: "success",
         title: "Insert",
         description: "Covernote Insert Sucessfully",
         show: true,
       }))
-      dispatch(showLoader({
-        isLoading:true
-      }))
+ 
+      reset(DEFAULT_VALUES)
     } catch (error) {
-      setApiFieldErrors(error, setError) // ✅ reusable error handler
       dispatch(hideLoader())
+      setApiFieldErrors(error, setError) // ✅ reusable error handler
+
     }
   };
 

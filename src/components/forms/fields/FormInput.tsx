@@ -87,8 +87,10 @@ export  function FormInput<T extends FieldValues>({
     <FormField
       control={control}
       name={name}
+      
       disabled={disabled}
       readOnly={readonly}
+      autoComplete="off" 
       render={({ field }) => (
         <FormItem>
           <Label>{label}</Label>
@@ -96,6 +98,7 @@ export  function FormInput<T extends FieldValues>({
             <Input {...field} placeholder={placeholder} type={type} 
                 disabled={disabled}
                 readOnly={readonly}
+                value={field.value ?? ''} // ✅ Add fallback
              onChange={(e) => {
               let  value = e.target.value
               if (isNumberType) {
