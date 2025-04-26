@@ -46,6 +46,7 @@ export function FormMultiSelect<TFieldValues extends FieldValues>({
             <MultiSelect
               options={options}
               defaultValue={field.value || []}
+              // value={field.value || []}
               onValueChange={(val) => field.onChange(val)}
               placeholder={placeholder}
               animation={animation}

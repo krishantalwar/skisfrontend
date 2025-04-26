@@ -59,8 +59,8 @@ const DEFAULT_VALUES = {
   gst: undefined,
   final_amt: undefined,
   total: undefined,
-  // add_on: [],
-  add_on: yup.array().of(yup.string()).nullable(), // Or yup.number() if your values are numbers
+  add_on: [],
+  // add_on: yup.array().of(yup.string()).nullable(), // Or yup.number() if your values are numbers
 
   policy_info: undefined,
   see_status: false,
