@@ -16,7 +16,7 @@ import { Home, User } from "lucide-react"
 
 const navItems = [
   { name: "Dashboard", icon: Home, href: "/" },
-
+  
   { 
     name: "Insert Covernotes", 
     icon: Home, href: "#",
@@ -27,7 +27,8 @@ const navItems = [
       { name: "Lic", icon: User, href: "/LicForm" },
     ]
 
-   }
+   },
+   { name: "All Covernote", icon: Home, href: "/Covernote" },
 ]
 
 export default function NavLayout() {

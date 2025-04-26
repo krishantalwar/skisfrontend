@@ -125,7 +125,7 @@ import { ExportMenu } from "@/components/table/ExportMenueServer"
   // { accessorKey: 'product.type_name', header: 'Product Type', enableSorting: true },
   { accessorKey: 'company.name', header: 'Company', enableSorting: true },
 
-  { accessorKey: 'user.name', header: 'Agent Name', enableSorting: true },
+  { accessorKey: 'agent.name', header: 'Agent Name', enableSorting: true },
   // { accessorKey: 'user.email', header: 'Agent Email', enableSorting: true },
   // { accessorKey: 'user.phone', header: 'Agent Phone', enableSorting: true },
 

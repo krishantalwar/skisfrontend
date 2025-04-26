@@ -87,9 +87,9 @@ export function DataTable<TData, TValue>({
         <DataTableColumnToggle table={table} />
       </div>
       {/* <div className="rounded-md border"> */}
-          <div className="relative w-full overflow-x-auto rounded-md border scroll-shadow">
+      <div className="relative w-full overflow-hidden rounded-md border">
+      <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
 
-      {/* <div className="w-full overflow-x-auto rounded-md border"> */}
         <Table className="w-full ">
           <TableHeader className="sticky top-0 z-10 bg-background">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -147,6 +147,7 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
+      </div>
       </div>
       <DataTablePagination table={table} total={total} page={page} onPageChange={onPageChange} />
     {/* </div> */}
