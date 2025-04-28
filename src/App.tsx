@@ -17,6 +17,11 @@ import UserTable from "@/pages/covernote/Covernote"
 import Login from "@/pages/login"
 import Navigation from "@/privateRoutes/navigation.component"
 import OldMaster from "@/privateRoutes/OldMaster"
+import AgentGroupTable from "@/pages/covernote/dummy"
+import Dummmy from "@/pages/covernote/newdummy"
+import Newdummyy from "@/pages/covernote/newdummyy"
+
+
 
 function App() {
 
@@ -30,6 +35,9 @@ function App() {
           <Route path="HealthForm"  element={<HealthForm />} />
           <Route path="LicForm"  element={<LicForm />} /> 
           <Route path="Covernote"  element={<UserTable />} />
+          <Route path="AgentGroupTable"  element={<AgentGroupTable />} />
+          <Route path="dummy"  element={<Dummmy />} />
+          <Route path="dumy"  element={<Newdummyy />} />
         </Route>
       </Route>
       <Route element={<OldMaster />}>

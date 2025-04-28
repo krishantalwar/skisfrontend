@@ -4,7 +4,8 @@ import { BaseQueryFn } from "@reduxjs/toolkit/query"
 import { showMessage } from "../features/ui/globalMessageSlice"
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: "https://api.skisindia.com/api/",
+  // baseUrl: "https://api.skisindia.com/api/",
+  baseUrl: "http://127.0.0.1:8000/api/",
   // credentials: "include",
   // prepareHeaders: (headers) => {
   //   headers.set("Accept", "application/json")
