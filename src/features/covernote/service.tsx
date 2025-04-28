@@ -30,7 +30,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
       }),
         covernoteExits: builder.query({
-            query: (id) => '/covernotes/exist/' + id, // GET endpoint
+            query: (id) => '/covernotes/exist?covernote=' + id, // GET endpoint
             // refetchOnReconnect: true,  // refetch if the connection is restored
             // refetchOnFocus: true,      // refetch when window gets focused
             refetchOnMountOrArgChange: true, // refetch every time the component mounts

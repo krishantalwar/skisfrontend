@@ -96,7 +96,6 @@ interface FormSearchSelectProps<T extends FieldValues> {
   options: Option[];
   placeholder?: string;
 }
-
 export function FormSelect<T extends FieldValues>({
   name,
   control,
@@ -104,6 +103,16 @@ export function FormSelect<T extends FieldValues>({
   options,
   placeholder = "Select an option",
 }: FormSearchSelectProps<T>) {
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const [triggerWidth, setTriggerWidth] = React.useState<number | undefined>(undefined);
+  const [open, setOpen] = React.useState(false); // 👈 NEW STATE
+
+  React.useEffect(() => {
+    if (triggerRef.current) {
+      setTriggerWidth(triggerRef.current.offsetWidth);
+    }
+  }, []);
+
   return (
     <FormField
       control={control}
@@ -115,7 +124,7 @@ export function FormSelect<T extends FieldValues>({
           <FormItem className="w-full">
             <FormLabel>{label}</FormLabel>
             <FormControl>
-              <Popover>
+              <Popover open={open} onOpenChange={setOpen}> {/* 👈 Control open state */}
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
@@ -124,19 +133,28 @@ export function FormSelect<T extends FieldValues>({
                       "w-full justify-between text-left",
                       !field.value && "text-muted-foreground"
                     )}
+                    ref={triggerRef} // 👈 Capture button width
+                    onClick={() => setOpen((prev) => !prev)} // 👈 Toggle manually
                   >
                     {selected ? selected.label : placeholder}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
+                <PopoverContent
+                  align="start"
+                  style={{ width: triggerWidth }}
+                  className="p-0"
+                >
                   <Command>
                     <CommandInput placeholder="Search..." />
                     <CommandEmpty>No option found.</CommandEmpty>
-                    <CommandGroup>
+                    <CommandGroup className="max-h-60 overflow-y-auto">
                       {options.map((opt) => (
                         <CommandItem
                           key={opt.value}
-                          onSelect={() => field.onChange(opt.value)}
+                          onSelect={() => {
+                            field.onChange(opt.value); // 👈 Set form value
+                            setOpen(false);             // 👈 Close the dropdown
+                          }}
                           className="cursor-pointer"
                         >
                           <div className="flex items-center gap-2">
@@ -164,4 +182,3 @@ export function FormSelect<T extends FieldValues>({
     />
   );
 }
-

@@ -316,7 +316,7 @@ const [
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <FormInput name="gst_amount" label="GST Amount" control={control} type="number" />
-          <FormInput name="total" label="Final Amount" control={control} type="number" disabled />
+          <FormInput name="total"disabled={true}  label="Final Amount" control={control} type="number" disabled />
           <FormSelect name="paymentmode" label="Payment Mode" control={control} options={paymentModes} />
           <FormInput name="recivedpayment" label="Payment Received" control={control} type="number" />
         </div>

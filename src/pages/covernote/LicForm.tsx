@@ -294,7 +294,7 @@ const LicForm = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 
-                    <FormInput name="total" label="Final Amount" control={control} placeholder="Final Amount" type="number" />
+                    <FormInput name="total" label="Final Amount"  disabled={true} control={control} placeholder="Final Amount" type="number" />
                 
                     <FormSelect name="paymentmode" label="Payment Method" control={control} options={paymentModes} />
                 
