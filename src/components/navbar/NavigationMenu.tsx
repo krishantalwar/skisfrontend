@@ -29,6 +29,7 @@ const navItems = [
 
    },
    { name: "All Covernote", icon: Home, href: "/Covernote" },
+   { name: "Add Agent", icon: Home, href: "/agent/add" },
 ]
 
 export default function NavLayout() {

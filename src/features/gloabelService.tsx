@@ -16,6 +16,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             refetchOnFocus: true,      // refetch when window gets focused
             refetchOnMountOrArgChange: true, // refetch every time the component mounts
             // You can also add `keepUnusedDataFor: 0` to prevent caching if you want.
+            providesTags: ['User'],
         }),
         product: builder.query({
             query: (id) => '/getProduct/' + id, // GET endpoint

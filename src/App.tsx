@@ -20,6 +20,7 @@ import OldMaster from "@/privateRoutes/OldMaster"
 import AgentGroupTable from "@/pages/covernote/dummy"
 import Dummmy from "@/pages/covernote/newdummy"
 import Newdummyy from "@/pages/covernote/newdummyy"
+import AgentAdd from "@/pages/agent/Agent"
 
 
 
@@ -38,6 +39,7 @@ function App() {
           <Route path="AgentGroupTable"  element={<AgentGroupTable />} />
           <Route path="dummy"  element={<Dummmy />} />
           <Route path="dumy"  element={<Newdummyy />} />
+          <Route path="agent/add"  element={<AgentAdd />} />
         </Route>
       </Route>
       <Route element={<OldMaster />}>
