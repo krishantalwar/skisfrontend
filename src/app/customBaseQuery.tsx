@@ -7,8 +7,8 @@ import { apiSlice } from '@/app/api'
 import {  logout as logouts } from '@/features/auth/authSlice';
 
 export const baseQuery = fetchBaseQuery({
-  // baseUrl: "https://api.skisindia.com/api/",
-  baseUrl: "http://127.0.0.1:8000/api/",
+  baseUrl: "https://api.skisindia.com/api/",
+  // baseUrl: "http://127.0.0.1:8000/api/",
   // credentials: "include",
   // prepareHeaders: (headers) => {
   //   headers.set("Accept", "application/json")
