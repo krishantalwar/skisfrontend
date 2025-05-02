@@ -248,12 +248,7 @@ export default function UserTable() {
             <ExportMenu
         fileName="Users"
         fetchAllData={() => triggerGetAllUsers().unwrap().then((res) => res.data)}
-        columns={[
-          { header: "ID", accessorKey: "id" },
-          { header: "Name", accessorKey: "name" },
-          { header: "Email", accessorKey: "email" },
-          { header: "Role", accessorKey: "role" },
-        ]}
+        columns={columns}
       />
     </div>
     <div className="overflow-auto">

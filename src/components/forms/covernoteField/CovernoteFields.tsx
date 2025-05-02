@@ -167,9 +167,9 @@ if(data?.data!=null){
 
 
       {/* Date Fields */}
-      <DatePickerField name="issue_date" label="Issued Date" control={control} />
-      <DatePickerField name="start_date" label="Start Date" control={control} />
-      <DatePickerField name="end_date" label="End Date" control={control} />
+      <FormInput type='date' name="issue_date" label="Issued Date" control={control} />
+      <FormInput type='date' name="start_date" label="Start Date" control={control} />
+      <FormInput type='date' name="end_date" label="End Date" control={control} />
 
     </div>
   );

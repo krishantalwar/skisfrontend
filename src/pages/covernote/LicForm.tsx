@@ -280,7 +280,7 @@ const LicForm = () => {
                 <AgentSelectionFields control={control} productOptions={Product}/>
                
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <DatePickerField name="dob" label="Date of Birth" control={control} />
+                    <FormInput type='date' name="dob" label="Date of Birth" control={control} />
 
                     <FormSelect name="pre_payment_mode" label="Premium Payment Mode" control={control} options={PremiumPaymentMode} />
                 

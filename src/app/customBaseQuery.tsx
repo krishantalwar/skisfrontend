@@ -2,6 +2,9 @@ import { fetchBaseQuery, FetchBaseQueryError } from "@reduxjs/toolkit/query/reac
 import { BaseQueryFn } from "@reduxjs/toolkit/query"
 // import { toast } from "@/components/ui/use-toast"
 import { showMessage } from "../features/ui/globalMessageSlice"
+import { apiSlice } from '@/app/api'
+
+import {  logout as logouts } from '@/features/auth/authSlice';
 
 export const baseQuery = fetchBaseQuery({
   // baseUrl: "https://api.skisindia.com/api/",
@@ -47,6 +50,19 @@ export const customBaseQuery: BaseQueryFn<any, unknown, FetchBaseQueryError> = a
           show: true,
         })
       )
+      return result
+    }
+    // 7009120362
+    if (status === 401) {
+      showMessage({
+        type: "error",
+        title: "Error",
+        description: message,
+        show: true,
+      })
+      dispatch(logouts());
+      dispatch(apiSlice.util.resetApiState());
+  
       return result
     }
 
