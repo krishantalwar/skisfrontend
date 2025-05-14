@@ -16,7 +16,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             // query: ({ page, perPage }) => `/covernotes?page=${page}&per_page=${perPage}`,
             
             query: (data) => ({
-                url: "/covernotes/",
+                url: "/covernotes",
                 method: "GET",
                 params: data,
             }),
