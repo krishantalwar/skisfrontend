@@ -10,7 +10,7 @@ interface Props<TData> {
 
 export function DataTablePagination<TData>({ table, total, page, onPageChange }: Props<TData>) {
   const pageCount = table.getPageCount()
-  console.log("pageCount",pageCount)
+  // console.log("pageCount",pageCount)
   return (
     <Pagination>
       <PaginationContent>

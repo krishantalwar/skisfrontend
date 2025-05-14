@@ -8,16 +8,13 @@ import { useCovernoteQuery ,useLazyCovernoteAllQuery} from '@/features/covernote
 // } from '@tanstack/react-table'
 // import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { useState ,useMemo,useEffect} from 'react'
 import { DataTable } from "@/components/table/DataTable"
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTableRowActions } from "@/components/table/DataTableRowActions"
 
 import { ExportMenu } from "@/components/table/ExportMenueServer"
-
-
-
-
+import { UserFilters } from "./UserFilters"
 
 
 // const columns: ColumnDef<any>[] = [
@@ -80,26 +77,22 @@ import { ExportMenu } from "@/components/table/ExportMenueServer"
 // ];
 
 
- const columns = [
+const columns = [
   { accessorKey: 'name', header: 'Customer Name', enableSorting: true },
   { accessorKey: 'phone', header: 'Phone', enableSorting: true },
   { accessorKey: 'address', header: 'Address', enableSorting: true },
   { accessorKey: 'pno', header: 'Policy No', enableSorting: true },
   { accessorKey: 'policy_info', header: 'Policy Info', enableSorting: true },
-
   { accessorKey: 'covernote', header: 'Covernote', enableSorting: true },
   // { accessorKey: 'covernote_type', header: 'Covernote Type ID', enableSorting: true },
   // { accessorKey: 'policy_type', header: 'Policy Type ID', enableSorting: true },
-
   { accessorKey: 'issue_date', header: 'Issue Date', enableSorting: true },
   { accessorKey: 'start_date', header: 'Start Date', enableSorting: true },
   { accessorKey: 'end_date', header: 'End Date', enableSorting: true },
-
   { accessorKey: 'make', header: 'Vehicle Make', enableSorting: true },
   { accessorKey: 'model', header: 'Vehicle Model', enableSorting: true },
   { accessorKey: 'veh_no', header: 'Vehicle No', enableSorting: true },
   { accessorKey: 'yom', header: 'Year of Manufacture', enableSorting: true },
-
   { accessorKey: 'act', header: 'ACT Premium', enableSorting: true },
   { accessorKey: 'pa', header: 'PA Cover', enableSorting: true },
   { accessorKey: 'da', header: 'DA Cover', enableSorting: true },
@@ -109,7 +102,6 @@ import { ExportMenu } from "@/components/table/ExportMenueServer"
   { accessorKey: 'final_amt', header: 'Final Amount', enableSorting: true },
   { accessorKey: 'dec_value', header: 'Declared Value', enableSorting: true },
   { accessorKey: 'cubic_cap', header: 'Cubic Capacity', enableSorting: true },
-
   {
     accessorKey: 'add_on',
     header: 'Add-ons',
@@ -124,11 +116,9 @@ import { ExportMenu } from "@/components/table/ExportMenueServer"
   { accessorKey: 'product.name', header: 'Product Name', enableSorting: true },
   // { accessorKey: 'product.type_name', header: 'Product Type', enableSorting: true },
   { accessorKey: 'company.name', header: 'Company', enableSorting: true },
-
   { accessorKey: 'agent.name', header: 'Agent Name', enableSorting: true },
   // { accessorKey: 'user.email', header: 'Agent Email', enableSorting: true },
   // { accessorKey: 'user.phone', header: 'Agent Phone', enableSorting: true },
-
   {
     accessorKey: 'payments',
     header: 'Payment Total',
@@ -138,7 +128,6 @@ import { ExportMenu } from "@/components/table/ExportMenueServer"
       return <span>{total}</span>;
     },
   },
-
   {
     accessorKey: 'actions',
     header: 'Actions',
@@ -152,8 +141,6 @@ import { ExportMenu } from "@/components/table/ExportMenueServer"
   },
 ];
 
-
-
 // Define export columns
 const exportColumns = [
   { header: "ID", accessorKey: "id" },
@@ -164,13 +151,32 @@ const exportColumns = [
 export default function UserTable() {
   const [pageIndex, setPageIndex] = useState(1)
   const [pageSize, setPageSize] = useState(5)
-  const [triggerGetAllUsers] = useLazyCovernoteAllQuery()
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("")
 
-  const { data=[], isLoading } = useCovernoteQuery({
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedSearch(searchTerm)
+    }, 500) // 500ms debounce
+    return () => clearTimeout(timeout)
+  }, [searchTerm])
+
+const queryParams = useMemo(() => ({
     page: pageIndex,
     perPage: pageSize,
+    search: debouncedSearch, // if your API supports it
     // Add search, sort, etc. here if needed
-  }, {
+    create_date:currentDate
+    // search: searchTerm,
+}), [pageIndex, pageSize, debouncedSearch,currentDate]);
+
+
+  const [triggerGetAllUsers] = useLazyCovernoteAllQuery()
+
+
+
+  const { data=[], isLoading ,refetch:refetchCovernoteQuery} = useCovernoteQuery(queryParams, {
     refetchOnReconnect: true,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -237,6 +243,7 @@ export default function UserTable() {
   //   </div>
   // )
 
+  // console.log("SearchTerm",searchTerm)
   return (
     <div className="p-6">
       <h1 className="text-xl font-semibold mb-4">Users</h1>
@@ -245,12 +252,13 @@ export default function UserTable() {
 
       {/* <ExportMenu  columns={exportColumns} fileName="Users" /> */}
 
-            <ExportMenu
+        <ExportMenu
         fileName="Users"
-        fetchAllData={() => triggerGetAllUsers().unwrap().then((res) => res.data)}
+        fetchAllData={() => triggerGetAllUsers(queryParams).unwrap().then((res) => res.data)}
         columns={columns}
       />
     </div>
+
     <div className="overflow-auto">
       <DataTable
       columns={columns}
@@ -259,7 +267,45 @@ export default function UserTable() {
       page={pageIndex}
       pageSize={pageSize}
       onPageChange={setPageIndex}
-      onSearch={((ee)=>{console.log("ee",ee)})}
+      // onSearch={((ee)=>{refetchCovernoteQuery(ee)})}
+    //   onSearch={(term) => {
+    //   setSearchTerm(term);
+    //   setPageIndex(1);
+    // }}
+      searchValue={searchTerm}
+      onSearch={(value) => {
+        setSearchTerm(value)
+        setPageIndex(1)
+      }}
+      toolbarContent={<UserFilters 
+      createdDate={currentDate}
+      onFilterChange={(e) => {
+     
+        setCurrentDate(e);
+        setPageIndex(1);
+      }} 
+    
+    onReset={()=>{
+        setSearchTerm("");
+        setCurrentDate("");
+        setPageIndex(1);
+    }}/>}
+
+  //    renderToolbar={(table) => (
+  //   <DataTableToolbar table={table} onSearch={(val) => setSearchQuery(val)}>
+  //     <Select onValueChange={(value) => setStatusFilter(value)}>
+  //       <SelectTrigger className="w-[120px]">
+  //         <SelectValue placeholder="Status" />
+  //       </SelectTrigger>
+  //       <SelectContent>
+  //         <SelectItem value="active">Active</SelectItem>
+  //         <SelectItem value="inactive">Inactive</SelectItem>
+  //       </SelectContent>
+  //     </Select>
+
+  //     {/* Add more custom filters here */}
+  //   </DataTableToolbar>
+  // )}
       onSortChange={((ee)=>{console.log("onSortChange",ee)})}
       // onSearch={onSearch}
       // onSortChange={onSortChange}

@@ -13,7 +13,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         //   }),
 
           covernote: builder.query({
-            query: ({ page, perPage }) => `/covernotes?page=${page}&per_page=${perPage}`,
+            // query: ({ page, perPage }) => `/covernotes?page=${page}&per_page=${perPage}`,
+            
+            query: (data) => ({
+                url: "/covernotes/",
+                method: "GET",
+                params: data,
+            }),
             
             // transformResponse: (response) => ({
             //   data: response.data,
@@ -22,11 +28,11 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
           }),
 
               // ✅ New endpoint: get all users without pagination
-              covernoteAll: builder.query({
-        query: () => ({
+            covernoteAll: builder.query({
+        query: (data) => ({
           url: "/covernotes/all",
           method: "GET",
-        //   params: { all: true },
+          params: data
         }),
       }),
         covernoteExits: builder.query({

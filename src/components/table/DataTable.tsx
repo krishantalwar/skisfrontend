@@ -27,7 +27,10 @@ interface DataTableProps<TData, TValue> {
   onSearch?: (value: string) => void
   onSortChange?: (sortBy: string, desc: boolean) => void
   onSelectRows?: (rows: TData[]) => void
-  loading?: boolean
+  loading?: boolean,
+  renderToolbar?: (table: Table<TData>) => React.ReactNode // 👈 new prop
+  toolbarContent?: React.ReactNodem
+  searchValue:string
 }
 
 export function DataTable<TData, TValue>({
@@ -40,7 +43,10 @@ export function DataTable<TData, TValue>({
   onSearch,
   onSortChange,
   onSelectRows,
-  loading
+  loading,
+  renderToolbar,
+  toolbarContent,
+  searchValue
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -83,7 +89,12 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-2">
-        <DataTableToolbar table={table} onSearch={onSearch} />
+        {/* <DataTableToolbar table={table} onSearch={onSearch} /> */}
+          {/* {renderToolbar ? renderToolbar(table) : <DataTableToolbar table={table} onSearch={onSearch} />} */}
+
+        <DataTableToolbar table={table} searchValue={searchValue} onSearch={onSearch}>
+          {toolbarContent}
+        </DataTableToolbar>
         <DataTableColumnToggle table={table} />
       </div>
       {/* <div className="rounded-md border"> */}

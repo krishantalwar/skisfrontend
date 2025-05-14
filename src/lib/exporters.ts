@@ -2,11 +2,19 @@ import * as XLSX from "xlsx"
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
 
+
+function getValueByPath(obj: any, path: string) {
+  // console.log(path)
+  // console.log(path.split('.'))
+  // console.log("obj",obj)
+  // console.log(path.split('.').reduce((acc, part) => acc?.[part], obj))
+  return path.split('.').reduce((acc, part) => acc?.[part], obj);
+}
 export function exportToExcel(data: any[], columns: { header: string; accessorKey: string }[], fileName: string) {
   const worksheetData = data.map(row => {
     const obj: Record<string, any> = {}
     columns.forEach(col => {
-      obj[col.header] = row[col.accessorKey]
+      obj[col.header] = getValueByPath(row, col.accessorKey) ?? '' 
     })
     return obj
   })
