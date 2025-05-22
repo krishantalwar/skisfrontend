@@ -11,6 +11,8 @@ import NonMotorForm from "@/pages/covernote/NonMotorForm"
 import HealthForm from "@/pages/covernote/HelathForm"
 import LicForm from "@/pages/covernote/LicForm"
 import UserTable from "@/pages/covernote/Covernote"
+import PendingPayment from "@/pages/pendingPayment/PendingPayment"
+
 // import MotorFormWrapper from "@/pages/covernote/MotorFormWrapper"
 // import Lic from "@/pages/covernote/LicForm"
 
@@ -19,6 +21,7 @@ import Navigation from "@/privateRoutes/navigation.component"
 import OldMaster from "@/privateRoutes/OldMaster"
 import AgentGroupTable from "@/pages/covernote/dummy"
 import Dummmy from "@/pages/covernote/newdummy"
+
 import Newdummyy from "@/pages/covernote/newdummyy"
 import AgentAdd from "@/pages/agent/Agent"
 
@@ -36,6 +39,7 @@ function App() {
           <Route path="HealthForm"  element={<HealthForm />} />
           <Route path="LicForm"  element={<LicForm />} /> 
           <Route path="Covernote"  element={<UserTable />} />
+          <Route path="pendingPayment"  element={<PendingPayment />} />
           <Route path="AgentGroupTable"  element={<AgentGroupTable />} />
           <Route path="dummy"  element={<Dummmy />} />
           <Route path="dumy"  element={<Newdummyy />} />

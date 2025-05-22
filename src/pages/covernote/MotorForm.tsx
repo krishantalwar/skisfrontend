@@ -119,13 +119,13 @@ const validationSchema = yup.object({
     .integer('Covernote type must be a number')
     .positive('Covernote type must be a positive number'),
 
-  start_date: yup.date().required('Start date is required'),
+  // start_date: yup.required('Start date is required'),
 
-  end_date: yup.date()
-    .required('End date is required')
-    .min(yup.ref('start_date'), 'End date must be after or equal to start date'),
+  // end_date: yup.date()
+  //   .required('End date is required')
+  //   .min(yup.ref('start_date'), 'End date must be after or equal to start date'),
 
-  issue_date: yup.date().required('Issue date is required'),
+  // issue_date: yup.date().required('Issue date is required'),
 
   // create_date: yup.date().required('Create date is required'),
 
@@ -336,11 +336,18 @@ const LicForm = () => {
   // Form submission logic (as per your earlier example)
   const onSubmit = async (data: any) => {
     console.log("Submitting:", data);
+
+
+    // return "";
     // Handle the submission logic (like calling API, etc.)
-         dispatch(showLoader({
-                    isLoading:true
-                  }));
+    dispatch(showLoader({
+              isLoading:true
+            }));
     try {
+      // data.issue_date   =data.issue_date.toISOString().split('T')[0]
+      // data.end_date   =data.end_date.toISOString().split('T')[0]
+      // data.start_date   =data.start_date.toISOString().split('T')[0]
+
       await MotorInsert(data).unwrap()
       dispatch(hideLoader())
       dispatch(showMessage({

@@ -12,29 +12,29 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         //     },
         //   }),
 
-          covernote: builder.query({
-            // query: ({ page, perPage }) => `/covernotes?page=${page}&per_page=${perPage}`,
-            
-            query: (data) => ({
-                url: "/covernotes",
-                method: "GET",
-                params: data,
-            }),
-            
-            // transformResponse: (response) => ({
-            //   data: response.data,
-            //   total: response.meta.total,
-            // }),
-          }),
-
-              // ✅ New endpoint: get all users without pagination
-            covernoteAll: builder.query({
+        covernote: builder.query({
+        // query: ({ page, perPage }) => `/covernotes?page=${page}&per_page=${perPage}`,
+        
         query: (data) => ({
-          url: "/covernotes/all",
-          method: "GET",
-          params: data
+            url: "/covernotes",
+            method: "GET",
+            params: data,
         }),
-      }),
+        
+        // transformResponse: (response) => ({
+        //   data: response.data,
+        //   total: response.meta.total,
+        // }),
+        }),
+
+        // ✅ New endpoint: get all users without pagination
+        covernoteAll: builder.query({
+            query: (data) => ({
+            url: "/covernotes/all",
+            method: "GET",
+            params: data
+            }),
+        }),
         covernoteExits: builder.query({
             query: (id) => '/covernotes/exist?covernote=' + id, // GET endpoint
             // refetchOnReconnect: true,  // refetch if the connection is restored
@@ -84,6 +84,31 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 return responseData;
             },
         }),
+
+
+        pendingPayment: builder.query({
+        // query: ({ page, perPage }) => `/covernotes?page=${page}&per_page=${perPage}`,
+        
+        query: (data) => ({
+            url: "/pendigPayment",
+            method: "GET",
+            params: data,
+        }),
+        
+        // transformResponse: (response) => ({
+        //   data: response.data,
+        //   total: response.meta.total,
+        // }),
+        }),
+
+        // ✅ New endpoint: get all users without pagination
+        pendingPaymentAll: builder.query({
+            query: (data) => ({
+            url: "/pendigPayment/all",
+            method: "GET",
+            params: data
+            }),
+        }),
     }),
     overrideExisting: false,
 });
@@ -98,7 +123,12 @@ export const {
     useHealthInsertMutation,
     useLicInsertMutation,
     
-    useLazyCovernoteAllQuery
+    useLazyCovernoteAllQuery,
+
+    usePendingPaymentQuery,
+    
+    useLazyPendingPaymentAllQuery,
+
    
 } = extendedApiSlice;
 

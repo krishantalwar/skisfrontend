@@ -91,13 +91,14 @@ const validationSchema = yup.object({
     .integer('Covernote type must be a number')
     .positive('Covernote type must be a positive number'),
 
-  start_date: yup.date().required('Start date is required'),
+  // start_date: yup.date().required('Start date is required'),
 
-  end_date: yup.date()
-    .required('End date is required')
-    .min(yup.ref('start_date'), 'End date must be after or equal to start date'),
+  // end_date: yup.date()
+  //   .required('End date is required')
+  //   .min(yup.ref('start_date'), 'End date must be after or equal to start date'),
 
-  issue_date: yup.date().required('Issue date is required'),
+  // issue_date: yup.date().required('Issue date is required'),
+
   dob: yup.date().required('DOB date is required'),
 
   // create_date: yup.date().required('Create date is required'),
