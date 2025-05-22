@@ -30,6 +30,7 @@ const navItems = [
    },
    { name: "All Covernote", icon: Home, href: "/Covernote" },
    { name: "Add Agent", icon: Home, href: "/agent/add" },
+      { name: "Pending Payment", icon: Home, href: "/pendingPayment" },
 ]
 
 export default function NavLayout() {
