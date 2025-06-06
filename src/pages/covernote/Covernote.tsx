@@ -124,7 +124,7 @@ const columns = [
     header: 'Payment Total',
     cell: ({ row }) => {
       const payments = row.original.payments || [];
-      const total = payments.reduce((sum, p) => sum + (p.amount || 0), 0);
+      const total = payments.reduce((sum, p) => Number(sum) + Number(p.amount || 0), Number(0));
       return <span>{total}</span>;
     },
   },

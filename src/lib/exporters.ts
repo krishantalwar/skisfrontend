@@ -14,7 +14,8 @@ function getValueByPath(obj: any, path: string) {
     console.log("obj",obj)
     console.log(obj?.['payments'])
     const payments = obj?.['payments'] || [];
-    const total = payments.reduce((sum, p) => sum + (p.amount || 0),0);
+    // const total = payments.reduce((sum, p) => sum + (p.amount || 0),0);
+    const total = payments.reduce((sum, p) => Number(sum) + Number(p.amount || 0), Number(0));
     return total;
   }
   return path.split('.').reduce((acc, part) => acc?.[part], obj);

@@ -248,7 +248,7 @@ const MotorForm = () => {
   useEffect(() => {
     const parsedBasic = parseFloat(basic || '0');
     const parsedGst = parseFloat(gst || '0');
-    const gstAmount = (parsedBasic * parsedGst) / 100;
+    const gstAmount = Math.round((parsedBasic * parsedGst) / 100);
     const total = parsedBasic + gstAmount;
 
     if (total !== getValues('total')) {

@@ -146,9 +146,9 @@ const validationSchema = yup.object({
     .integer('Policy type must be an integer')
     .positive('Policy type must be a positive number'),
     
-    pre_exp_date:yup.date()
-    .required('pre_exp_date date is required')
-    .min(yup.ref('start_date'), 'Pre Exp date must be after or equal to start date'),
+    // pre_exp_date:yup.date()
+    // .required('pre_exp_date date is required')
+    // .min(yup.ref('start_date'), 'Pre Exp date must be after or equal to start date'),
 
 
 
