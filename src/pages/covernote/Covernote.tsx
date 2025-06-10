@@ -86,10 +86,8 @@ import { ExportMenu } from "@/components/table/ExportMenueServer"
   { accessorKey: 'address', header: 'Address', enableSorting: true },
   { accessorKey: 'pno', header: 'Policy No', enableSorting: true },
   { accessorKey: 'policy_info', header: 'Policy Info', enableSorting: true },
+{ accessorKey: 'covernote', header: 'Covernote', enableSorting: true },
 
-  { accessorKey: 'covernote', header: 'Covernote', enableSorting: true },
-  // { accessorKey: 'covernote_type', header: 'Covernote Type ID', enableSorting: true },
-  // { accessorKey: 'policy_type', header: 'Policy Type ID', enableSorting: true },
 
   { accessorKey: 'issue_date', header: 'Issue Date', enableSorting: true },
   { accessorKey: 'start_date', header: 'Start Date', enableSorting: true },

@@ -7,7 +7,7 @@ import { apiSlice } from '@/app/api'
 import {  logout as logouts } from '@/features/auth/authSlice';
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: "https://api.skisindia.com/api/",
+  baseUrl: "https://skislaravel.skisindia.com/api/",
   // credentials: "include",
   // prepareHeaders: (headers) => {
   //   headers.set("Accept", "application/json")

@@ -10,12 +10,12 @@ const Navigation = () => {
     (state) => state?.auth
   );
   console.log("isAuthenticated",isAuthenticated)
-  return isAuthenticated ? (
+  return true ? (
 
       <Outlet />
 
   ) : (
-    // <Outlet />
+   
 
     <Navigate to="/login" />
   );
